@@ -32,12 +32,12 @@
           autoHideDialCode: false,
           separateDialCode :true,
           geoIpLookup: function(callback) {
-            $.get('http://www.geoplugin.net/json.gp', function(r) {
+            //$.get('http://www.geoplugin.net/json.gp', function(r) {
               // todo: buy api key if you want to use this service with SSL
               // more info: https://www.geoplugin.com/webservices/ssl
               // callback(r.geoplugin_countryCode);
               callback('CA');
-            }, "json");
+            //}, "json");
           },
           utilsScript: "intl-tel-input/js/utils.js",
         });
