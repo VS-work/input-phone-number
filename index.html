@@ -23,14 +23,12 @@
       <button onclick="displayFullNumber()">send</button>
 
       <script src="jquery/jquery.min.js"></script>
-      <script src="input-mask/jquery.inputmask.min.js"></script>
       <script src="intl-tel-input/js/intlTelInput.js"></script>
       <script>
+        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         var input = document.querySelector("#phone");
         var iti = window.intlTelInput(input, {
           initialCountry: "auto",
-          autoHideDialCode: false,
-          separateDialCode :true,
           geoIpLookup: function(callback) {
             //$.get('http://www.geoplugin.net/json.gp', function(r) {
               // todo: buy api key if you want to use this service with SSL
@@ -41,10 +39,35 @@
           },
           utilsScript: "intl-tel-input/js/utils.js",
         });
-        $('#phone').inputmask({"mask": "999 999-9999"});
+
+        function plusInFirst(str) {
+          return str && str.length > 0 && str[0] == '+';
+        }
+
+        function containsProhibitedChars(str) {
+          return /[^0-9 ]/.test(str);
+        }
+
         function displayFullNumber() {
-          var fullNumber = iti.getSelectedCountryData().dialCode + ' ' + document.querySelector('#phone').value;
-          alert(fullNumber);
+          var msg = null;
+          var justNumber = input.value.trim();
+          var fullNumber = plusInFirst(justNumber) ? justNumber : '+' + iti.getSelectedCountryData().dialCode + justNumber;
+          if (justNumber) {
+            if (!iti.isValidNumber()) {
+              var errorCode = iti.getValidationError();
+              msg = errorMap[errorCode];
+            } else if (containsProhibitedChars(fullNumber.substr(1))) {
+              msg = 'Number contains wrong characters'
+            }
+          } else {
+            msg = 'Number is empty';
+          }
+
+          if (msg == null) {
+            alert(fullNumber);
+          } else {
+            alert('Error in "' + fullNumber + '": ' + msg);
+          }
         }
       </script>
     </div>
