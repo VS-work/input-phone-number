@@ -33,7 +33,10 @@
           separateDialCode :true,
           geoIpLookup: function(callback) {
             $.get('http://www.geoplugin.net/json.gp', function(r) {
-              callback(r.geoplugin_countryCode);
+              // todo: buy api key if you want to use this service with SSL
+              // more info: https://www.geoplugin.com/webservices/ssl
+              // callback(r.geoplugin_countryCode);
+              callback('CA');
             }, "json");
           },
           utilsScript: "intl-tel-input/js/utils.js",
