@@ -30,12 +30,9 @@
         var iti = window.intlTelInput(input, {
           initialCountry: "auto",
           geoIpLookup: function(callback) {
-            //$.get('http://www.geoplugin.net/json.gp', function(r) {
-              // todo: buy api key if you want to use this service with SSL
-              // more info: https://www.geoplugin.com/webservices/ssl
-              // callback(r.geoplugin_countryCode);
-              callback('CA');
-            //}, "json");
+            $.get('https://api-beta1.breethe.com/api/v6/geo', function(r) {
+              callback(r.country);
+            }, "json");
           },
           utilsScript: "intl-tel-input/js/utils.js",
         });
